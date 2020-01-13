@@ -84,6 +84,7 @@ func (ck *Clerk) Get(key string) string {
 				var reply GetReply
 				ok := srv.Call("ShardKV.Get", &args, &reply)
 				if ok && reply.WrongLeader == false && (reply.Err == OK || reply.Err == ErrNoKey) {
+					time.Sleep(time.Millisecond*15)
 					return reply.Value
 				}
 				if ok && (reply.Err == ErrWrongGroup) {
